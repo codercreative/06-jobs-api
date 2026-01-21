@@ -3,11 +3,25 @@ const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
 const getAllRecipes = async (req, res) => {
-  res.send("get all recipes");
+  const recipes = await Recipe.find({ createdBy: req.user.userId }).sort(
+    "createdAt"
+  );
+  res.status(StatusCodes.OK).json({ recipes, count: recipes.length });
 };
 
 const getRecipe = async (req, res) => {
-  res.send("get recipe");
+  const {
+    user: { userId },
+    params: { id: recipeId },
+  } = req;
+
+  const recipe = await Recipe.findOne({ _id: recipeId, createdBy: userId });
+
+  if (!recipe) {
+    throw new NotFoundError(`No recipe with id ${recipeId} `);
+  }
+
+  res.status(StatusCodes.OK).json({ recipe });
 };
 
 const createRecipe = async (req, res) => {
@@ -17,11 +31,45 @@ const createRecipe = async (req, res) => {
 };
 
 const updateRecipe = async (req, res) => {
-  res.send("update recipe");
+  const {
+    body: { title, ingredients },
+    user: { userId },
+    params: { id: recipeId },
+  } = req;
+
+  if (title === "" || ingredients === "") {
+    throw new BadRequestError("Title or Ingredients fields cannot be empty");
+  }
+
+  const recipe = await Recipe.findByIdAndUpdate(
+    { _id: recipeId, createdBy: userId },
+    req.body,
+    { new: true, runValidators: true }
+  );
+
+  if (!recipe) {
+    throw new NotFoundError(`No recipe with id ${recipeId} `);
+  }
+
+  res.status(StatusCodes.OK).json({ recipe });
 };
 
 const deleteRecipe = async (req, res) => {
-  res.send("delete recipe");
+  const {
+    user: { userId },
+    params: { id: recipeId },
+  } = req;
+
+  const recipe = await Recipe.findOneAndRemove({
+    _id: recipeId,
+    createdBy: userId,
+  });
+
+  if (!recipe) {
+    throw new NotFoundError(`No recipe with id ${recipeId} `);
+  }
+
+  res.status(StatusCodes.OK).send();
 };
 
 module.exports = {
