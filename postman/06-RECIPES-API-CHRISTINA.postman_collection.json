@@ -1,0 +1,317 @@
+{
+  "info": {
+    "_postman_id": "806149ae-3d99-4bdb-b07a-f48a601a5c6e",
+    "name": "06-RECIPES-API-CHRISTINA",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50523943",
+    "_collection_link": "https://go.postman.co/collection/50523943-806149ae-3d99-4bdb-b07a-f48a601a5c6e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Register User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const jsonData = pm.response.json();",
+              "pm.globals.set(\"accessToken\", jsonData.token);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\":\"tony\", \"email\":\"tony@gmail.com\",\"password\":\"secret\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}/auth/register",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const jsonData = pm.response.json();",
+              "pm.globals.set(\"accessToken\", jsonData.token);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n   \"name\": \"anna\", \"email\":\"anna@gmail.com\", \"password\":\"secret\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}/auth/login",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Recipe",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTZjM2I5NDNmNjBhODIzOGE1ZTc0ZmMiLCJuYW1lIjoiYW5uYSIsImlhdCI6MTc2ODcwMDgyMCwiZXhwIjoxNzcxMjkyODIwfQ.nPWOPwGLTWSYmd6agtDmcFRbcq3hLC26YfEpbkMkSgc",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\":\"salad\", \"ingredients\":[\"lettuce\", \"feta cheese\", \"dressing\", \"raisins\"]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}/recipes",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "recipes"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Recipes",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTZjM2I5NDNmNjBhODIzOGE1ZTc0ZmMiLCJuYW1lIjoiYW5uYSIsImlhdCI6MTc2ODcwMDgyMCwiZXhwIjoxNzcxMjkyODIwfQ.nPWOPwGLTWSYmd6agtDmcFRbcq3hLC26YfEpbkMkSgc",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\":\"blueberry pancakes\", \"ingredients\":[\"blueberries\", \"flour\", \"eggs\", \"butter\"]\n}"
+        },
+        "url": {
+          "raw": "{{URL}}/recipes",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "recipes"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Single Recipe",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{URL}}/recipes/696fbe3ef88ba9b52c30146a",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "recipes",
+            "696fbe3ef88ba9b52c30146a"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Recipe",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\":\"chef's kiss\", \"ingredients\":[\"chocolate\", \"strawberries\", \"whipped cream\"]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL}}/recipes/696fc0d9f88ba9b52c301478",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "recipes",
+            "696fc0d9f88ba9b52c301478"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Recipe",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\":\"chef's kiss\", \"ingredients\":[\"chocolate\", \"strawberries\", \"whipped cream\"]\n}"
+        },
+        "url": {
+          "raw": "{{URL}}/recipes/696fc0d9f88ba9b52c301478",
+          "host": [
+            "{{URL}}"
+          ],
+          "path": [
+            "recipes",
+            "696fc0d9f88ba9b52c301478"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "URL",
+      "value": ""
+    }
+  ]
+}
