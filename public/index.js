@@ -30,7 +30,7 @@ export let message = null;
 import { showRecipes, handleRecipes } from "./recipes.js";
 import { showLoginRegister, handleLoginRegister } from "./loginRegister.js";
 import { handleLogin } from "./login.js";
-import { handleAddEdit } from "./addEdit.js";
+import { handleAddEdit, handleDelete } from "./addEdit.js";
 import { handleRegister } from "./register.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
   handleRecipes();
   handleRegister();
   handleAddEdit();
+  handleDelete();
 
   if (token) {
     showRecipes();

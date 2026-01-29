@@ -69,7 +69,7 @@ const deleteRecipe = async (req, res) => {
     throw new NotFoundError(`No recipe with id ${recipeId} `);
   }
 
-  res.status(StatusCodes.OK).send();
+  res.status(StatusCodes.OK).json({ msg: "The entry was deleted." });
 };
 
 module.exports = {

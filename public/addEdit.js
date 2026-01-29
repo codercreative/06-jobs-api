@@ -1,6 +1,9 @@
 import { enableInput, inputEnabled, message, setDiv, token } from "./index.js";
 import { showRecipes } from "./recipes.js";
 
+const recipesTable = document.getElementById("recipes-table");
+console.log(recipesTable);
+
 let addEditDiv = null;
 let title = null;
 let ingredients = null;
@@ -17,11 +20,17 @@ export const handleAddEdit = () => {
 
   addEditDiv.addEventListener("click", async (e) => {
     if (inputEnabled && e.target.nodeName === "BUTTON") {
+      //CREATING OR UPDATING A RECIPE
       if (e.target === addingRecipe) {
         enableInput(false);
 
         let method = "POST";
         let url = "/api/v1/recipes";
+
+        if (addingRecipe.textContent === "update") {
+          method = "PATCH";
+          url = `/api/v1/recipes/${addEditDiv.dataset.id}`;
+        }
 
         try {
           const response = await fetch(url, {
@@ -40,8 +49,14 @@ export const handleAddEdit = () => {
           });
 
           const data = await response.json();
-          if (response.status === 201) {
-            message.textContent = "The recipe was entered";
+          if (response.status === 200 || response.status === 201) {
+            if (response.status === 200) {
+              //200 is expected for successful update
+              message.textContent = "The recipe entry was updated";
+            } else {
+              //201 is expected for successful create
+              message.textContent = "The recipe was created";
+            }
 
             title.value = "";
             ingredients.value = "";
@@ -55,7 +70,6 @@ export const handleAddEdit = () => {
           console.error(err);
           message.textContent = " A communications error occurred.";
         }
-
         enableInput(true);
       } else if (e.target === editCancel) {
         message.textContent = "";
@@ -87,6 +101,7 @@ export const showAddEdit = async (recipeId) => {
       });
 
       const data = await response.json();
+
       if (response.status === 200) {
         title.value = data.recipe.title;
         ingredients.value = data.recipe.ingredients;
@@ -107,4 +122,39 @@ export const showAddEdit = async (recipeId) => {
     }
     enableInput(true);
   }
+};
+
+//Function and event listener to delete recipe
+
+export const handleDelete = async () => {
+  recipesTable.addEventListener("click", async (e) => {
+    if (e.target.classList.contains("deleteButton")) {
+      console.log("I am clicked");
+      enableInput(false);
+
+      let method = "DELETE";
+      let url = `/api/v1/recipes/${e.target.dataset.id}`;
+
+      try {
+        const response = await fetch(url, {
+          method: method,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          message.textContent = "Recipe successfully deleted.";
+          showRecipes();
+        } else {
+          message.textContent = data.msg;
+        }
+      } catch (err) {
+        console.error(err);
+        message.textContent = "A communications error occurred.";
+      }
+      enableInput(true);
+    }
+  });
 };
