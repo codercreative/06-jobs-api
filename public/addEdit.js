@@ -2,7 +2,6 @@ import { enableInput, inputEnabled, message, setDiv, token } from "./index.js";
 import { showRecipes } from "./recipes.js";
 
 const recipesTable = document.getElementById("recipes-table");
-console.log(recipesTable);
 
 let addEditDiv = null;
 let title = null;
@@ -129,7 +128,6 @@ export const showAddEdit = async (recipeId) => {
 export const handleDelete = async () => {
   recipesTable.addEventListener("click", async (e) => {
     if (e.target.classList.contains("deleteButton")) {
-      console.log("I am clicked");
       enableInput(false);
 
       let method = "DELETE";
