@@ -13,8 +13,8 @@ const RecipeSchema = new mongoose.Schema(
     },
     difficulty: {
       type: String,
-      enum: ["Easy", "Medium", "Hard"],
-      default: "Easy",
+      enum: ["easy", "medium", "hard"],
+      default: "easy",
     },
     createdBy: {
       type: mongoose.Types.ObjectId,

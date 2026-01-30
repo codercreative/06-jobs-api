@@ -36,10 +36,13 @@ app.use(helmet());
 app.use(cors());
 app.use(xss());
 
-// routes
+// static
+app.use(express.static("public"));
+// api routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/recipes", authenticateUser, recipesRouter);
 
+// middleware error handling
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
